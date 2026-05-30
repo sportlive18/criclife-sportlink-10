@@ -34,6 +34,7 @@
       -webkit-user-select: none;
     }
 
+    /* ── FULL-SCREEN VIDEO ── */
     #videoWrap {
       position: fixed; inset: 0;
       background: #000;
@@ -47,6 +48,7 @@
       display: block;
     }
 
+    /* ── TOP BAR — always visible ── */
     #topBar {
       position: fixed; top: 0; left: 0; right: 0;
       padding: 10px 14px;
@@ -89,6 +91,7 @@
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
+    /* ── BOTTOM CONTROLS — always visible ── */
     #controls {
       position: fixed; bottom: 0; left: 0; right: 0;
       padding: 14px 16px;
@@ -98,6 +101,7 @@
       display: flex; flex-direction: column; gap: 10px;
     }
 
+    /* Seek bar row */
     #seekRow {
       display: flex; align-items: center; gap: 10px;
     }
@@ -122,8 +126,10 @@
       position: absolute; left:0; top:0; height:100%;
       background: #EF4444; border-radius:3px; width: 0%;
     }
+    /* For live streams, hide seek */
     .is-live #seekRow { display: none; }
 
+    /* Buttons row */
     #btnRow {
       display: flex; align-items: center; gap: 4px;
     }
@@ -143,6 +149,7 @@
 
     #playPauseBtn { font-size: 1.3rem; }
 
+    /* Volume slider */
     #volWrap {
       display: flex; align-items: center; gap: 6px; flex: 1;
     }
@@ -165,6 +172,7 @@
 
     .spacer { flex: 1; }
 
+    /* Quality badge */
     #qualityBtn {
       font-size: 0.65rem; font-weight: 800;
       width: auto; padding: 0 10px; border-radius: 8px;
@@ -174,8 +182,10 @@
       letter-spacing: 0.3px;
     }
 
+    /* Fullscreen */
     #fsBtn { font-size: 1rem; }
 
+    /* ── LOADING OVERLAY ── */
     #loadingOverlay {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.75);
@@ -198,6 +208,7 @@
       font-size: 0.8rem; color: rgba(255,255,255,0.65); font-weight: 500;
     }
 
+    /* ── ERROR OVERLAY ── */
     #errorOverlay {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.88);
@@ -222,6 +233,7 @@
       border: 1px solid var(--border); color: var(--text);
     }
 
+    /* ── SERVER PANEL ── */
     #serverToggleBtn {
       position: fixed; bottom: 90px; right: 14px;
       width: 46px; height: 46px; border-radius: 50%;
@@ -322,6 +334,7 @@
     .srv-badge.on  { background: rgba(249,115,22,0.2); color: var(--accent); border: 1px solid rgba(249,115,22,0.3); }
     .srv-badge.off { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
 
+    /* Quality menu */
     #qualityMenu {
       position: fixed; bottom: 130px; left: 50%;
       transform: translateX(-50%) translateY(10px);
@@ -346,21 +359,25 @@
 </head>
 <body>
 
+<!-- TOP BAR -->
 <div id="topBar">
   <button id="backBtn"><i class="fas fa-arrow-left"></i></button>
   <span id="matchTitle">Loading…</span>
   <div id="liveChip"><span class="live-dot"></span> LIVE</div>
 </div>
 
+<!-- VIDEO -->
 <div id="videoWrap">
   <video id="video" autoplay playsinline preload="auto"></video>
 </div>
 
+<!-- LOADING -->
 <div id="loadingOverlay">
   <div class="spinner-ring"></div>
   <div id="loadingText">Connecting to stream…</div>
 </div>
 
+<!-- ERROR -->
 <div id="errorOverlay">
   <i class="fas fa-circle-exclamation"></i>
   <h3>Stream Unavailable</h3>
@@ -369,6 +386,7 @@
   <button class="err-btn secondary" id="tryNextBtn"><i class="fas fa-forward-step"></i> Try Next Server</button>
 </div>
 
+<!-- BOTTOM CONTROLS -->
 <div id="controls">
   <div id="seekRow">
     <span id="timeLabel">Live</span>
@@ -380,25 +398,33 @@
     </div>
   </div>
   <div id="btnRow">
+    <!-- Play/Pause -->
     <button class="ctrl-btn" id="playPauseBtn"><i class="fas fa-pause"></i></button>
+    <!-- Volume -->
     <div id="volWrap">
       <button class="ctrl-btn" id="muteBtn"><i class="fas fa-volume-high"></i></button>
       <input type="range" id="volSlider" min="0" max="1" step="0.05" value="1">
     </div>
     <div class="spacer"></div>
+    <!-- Quality -->
     <button class="ctrl-btn" id="qualityBtn">AUTO</button>
+    <!-- PiP -->
     <button class="ctrl-btn" id="pipBtn" title="Picture in Picture"><i class="fas fa-clone"></i></button>
+    <!-- Fullscreen -->
     <button class="ctrl-btn" id="fsBtn"><i class="fas fa-expand"></i></button>
   </div>
 </div>
 
+<!-- SERVER TOGGLE -->
 <button id="serverToggleBtn" title="Switch Server">
   <i class="fas fa-server"></i>
   <span class="srv-count-badge" id="srvCount">0</span>
 </button>
 
+<!-- PANEL BACKDROP -->
 <div id="panelBackdrop"></div>
 
+<!-- SERVER PANEL -->
 <div id="serverPanel">
   <div class="panel-handle"></div>
   <div class="panel-header">
@@ -408,15 +434,16 @@
   <div id="serverList"></div>
 </div>
 
+<!-- QUALITY MENU -->
 <div id="qualityMenu"></div>
 
 <script>
 /* ════════════════════════════════════════════
    PARAMS
 ════════════════════════════════════════════ */
-const QP = new URLSearchParams(window.location.search);
-const referer = QP.get('ref') || '';
-let title = QP.get('title') || 'Live Stream';
+const QP       = new URLSearchParams(window.location.search);
+const referer  = QP.get('ref')   || '';
+const title    = QP.get('title') || 'Live Stream';
 
 let servers = [];
 try {
@@ -459,6 +486,18 @@ const srvCountEl     = document.getElementById('srvCount');
 const liveChip       = document.getElementById('liveChip');
 
 /* ════════════════════════════════════════════
+   TITLE
+════════════════════════════════════════════ */
+matchTitleEl.textContent = title;
+document.title = title + ' — Sportlink TV';
+
+/* ════════════════════════════════════════════
+   SERVER COUNT BADGE
+════════════════════════════════════════════ */
+srvCountEl.textContent = servers.length;
+if (servers.length <= 1) serverToggle.style.display = 'none';
+
+/* ════════════════════════════════════════════
    LOADING / ERROR UI
 ════════════════════════════════════════════ */
 function showLoading(msg) {
@@ -486,12 +525,15 @@ async function loadStream(url, index) {
   buildQualityMenu([]);
   qualityBtn.textContent = 'AUTO';
 
+  // Destroy previous instance
   if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
   video.removeAttribute('src'); video.load();
 
+  // Detect if stream is iframe URL (not m3u8)
   const isIframe = !url.endsWith('.m3u8') && !url.includes('.m3u8') && !url.includes('playlist');
 
   if (isIframe) {
+    // Fallback: open in fullscreen iframe overlay
     openIframe(url, title);
     hideLoading();
     return;
@@ -513,7 +555,10 @@ async function loadStream(url, index) {
     hls.attachMedia(video);
 
     hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-      isLive = true;
+      isLive = hls.levels.length > 0;
+      // Check if it's actually live
+      const lvl = hls.levels[hls.currentLevel];
+      isLive = true; // Most sport streams are live
       liveChip.style.display = 'flex';
       document.getElementById('controls').classList.add('is-live');
       buildQualityMenu(hls.levels);
@@ -542,6 +587,7 @@ async function loadStream(url, index) {
     });
 
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    // Safari native HLS
     video.src = url;
     video.addEventListener('loadedmetadata', () => { hideLoading(); attemptPlay(); }, { once: true });
     video.addEventListener('error', () => showError('Could not load stream.'), { once: true });
@@ -551,6 +597,7 @@ async function loadStream(url, index) {
 }
 
 function openIframe(url, iTitle) {
+  // Create a temporary fullscreen iframe overlay
   const existing = document.getElementById('iframeOverlay');
   if (existing) existing.remove();
   const overlay = document.createElement('div');
@@ -559,6 +606,7 @@ function openIframe(url, iTitle) {
   overlay.innerHTML = '<iframe src="' + escHtml(url) + '" style="width:100%;height:100%;border:none;" allowfullscreen allow="autoplay;fullscreen;encrypted-media;picture-in-picture"></iframe>';
   document.body.appendChild(overlay);
   hideLoading();
+  // Hide video controls since it's iframe
   document.getElementById('controls').style.display = 'none';
 }
 
@@ -568,7 +616,7 @@ async function attemptPlay() {
 }
 
 /* ════════════════════════════════════════════
-   VIDEO EVENTS
+   VIDEO EVENTS → control state
 ════════════════════════════════════════════ */
 video.addEventListener('waiting', () => showLoading('Buffering…'));
 video.addEventListener('playing', () => { hideLoading(); updatePlayBtn(); });
@@ -620,13 +668,16 @@ function fmt(s) {
 }
 
 /* ════════════════════════════════════════════
-   CONTROLS
+   CONTROLS — PLAY/PAUSE
 ════════════════════════════════════════════ */
 playPauseBtn.addEventListener('click', () => {
   if (video.paused) video.play().catch(() => {});
   else video.pause();
 });
 
+/* ════════════════════════════════════════════
+   CONTROLS — VOLUME
+════════════════════════════════════════════ */
 muteBtn.addEventListener('click', () => {
   video.muted = !video.muted;
   if (!video.muted && video.volume === 0) video.volume = 0.5;
@@ -636,6 +687,9 @@ volSlider.addEventListener('input', () => {
   video.muted = video.volume === 0;
 });
 
+/* ════════════════════════════════════════════
+   CONTROLS — SEEK (VOD only)
+════════════════════════════════════════════ */
 document.getElementById('seekBarWrap').addEventListener('click', (e) => {
   if (isLive || !video.duration) return;
   const rect = e.currentTarget.getBoundingClientRect();
@@ -643,9 +697,13 @@ document.getElementById('seekBarWrap').addEventListener('click', (e) => {
   video.currentTime = pct * video.duration;
 });
 
+/* ════════════════════════════════════════════
+   CONTROLS — QUALITY
+════════════════════════════════════════════ */
 function buildQualityMenu(levels) {
   qualityMenu.innerHTML = '';
   if (!levels || !levels.length) return;
+
   const autoItem = document.createElement('div');
   autoItem.className = 'q-item active';
   autoItem.innerHTML = '<i class="fas fa-circle-check"></i> Auto';
@@ -657,6 +715,7 @@ function buildQualityMenu(levels) {
     closeQuality();
   });
   qualityMenu.appendChild(autoItem);
+
   levels.forEach((lvl, i) => {
     const label = lvl.height ? lvl.height + 'p' : 'Level ' + i;
     const item = document.createElement('div');
@@ -685,6 +744,9 @@ qualityBtn.addEventListener('click', (e) => {
 function closeQuality() { qualityOpen = false; qualityMenu.classList.remove('open'); }
 document.addEventListener('click', () => closeQuality());
 
+/* ════════════════════════════════════════════
+   CONTROLS — PICTURE IN PICTURE
+════════════════════════════════════════════ */
 pipBtn.addEventListener('click', async () => {
   try {
     if (document.pictureInPictureElement) await document.exitPictureInPicture();
@@ -693,6 +755,9 @@ pipBtn.addEventListener('click', async () => {
 });
 if (!document.pictureInPictureEnabled) pipBtn.style.display = 'none';
 
+/* ════════════════════════════════════════════
+   CONTROLS — FULLSCREEN
+════════════════════════════════════════════ */
 fsBtn.addEventListener('click', () => {
   const el = document.documentElement;
   if (!document.fullscreenElement && !document.webkitFullscreenElement) {
@@ -708,12 +773,18 @@ function updateFsBtn() {
   fsBtn.innerHTML = inFs ? '<i class="fas fa-compress"></i>' : '<i class="fas fa-expand"></i>';
 }
 
+/* ════════════════════════════════════════════
+   BACK BUTTON
+════════════════════════════════════════════ */
 document.getElementById('backBtn').addEventListener('click', () => {
   if (document.fullscreenElement) document.exitFullscreen();
   if (window.history.length > 1) window.history.back();
   else window.close();
 });
 
+/* ════════════════════════════════════════════
+   SERVER PANEL
+════════════════════════════════════════════ */
 function buildServerList() {
   serverListEl.innerHTML = '';
   servers.forEach((srv, i) => {
@@ -740,6 +811,9 @@ serverToggle.addEventListener('click', () => serverPanel.classList.contains('ope
 document.getElementById('closePanelBtn').addEventListener('click', closePanel);
 panelBackdrop.addEventListener('click', closePanel);
 
+/* ════════════════════════════════════════════
+   ERROR BUTTONS
+════════════════════════════════════════════ */
 document.getElementById('retryBtn').addEventListener('click', () => {
   errorOverlay.style.display = 'none';
   loadStream(servers[activeIndex]?.url, activeIndex);
@@ -750,72 +824,22 @@ document.getElementById('tryNextBtn').addEventListener('click', () => {
   loadStream(servers[next].url, next);
 });
 
+/* ════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════ */
 function escHtml(s) {
   return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
 /* ════════════════════════════════════════════
-   BOOT  — supports ?id=slug lookup via id.json
+   BOOT
 ════════════════════════════════════════════ */
-async function boot() {
-  const channelId = QP.get('id');
-
-  if (channelId && !servers.length) {
-    showLoading('Looking up channel…');
-    try {
-      const res = await fetch('https://sportlink-10.pages.dev/id.json');
-      const data = await res.json();
-      const ch = data[channelId];
-
-      if (!ch) {
-        showError('Channel "' + channelId + '" not found.');
-        return;
-      }
-
-      if (typeof ch === 'string') {
-        // Simple: just a URL string
-        servers = [{ name: 'Server 1', url: ch }];
-      } else if (Array.isArray(ch)) {
-        // Array of {name, url} objects
-        servers = ch;
-      } else {
-        // Object with optional title + servers/url
-        if (ch.title) {
-          title = ch.title;
-          matchTitleEl.textContent = title;
-          document.title = title + ' — Sportlink TV';
-        }
-        if (Array.isArray(ch.servers) && ch.servers.length) {
-          servers = ch.servers;
-        } else if (ch.url) {
-          servers = [{ name: 'Server 1', url: ch.url }];
-        }
-      }
-    } catch(e) {
-      showError('Failed to load channel list. Check your connection.');
-      return;
-    }
-  }
-
-  // Update title if provided via ?title= and not already set from JSON
-  if (title !== 'Live Stream') {
-    matchTitleEl.textContent = title;
-    document.title = title + ' — Sportlink TV';
-  }
-
-  srvCountEl.textContent = servers.length;
-  if (servers.length <= 1) serverToggle.style.display = 'none';
-
-  buildServerList();
-
-  if (servers.length) {
-    loadStream(servers[0].url, 0);
-  } else {
-    showError('No stream URLs provided.');
-  }
+buildServerList();
+if (servers.length) {
+  loadStream(servers[0].url, 0);
+} else {
+  showError('No stream URLs provided.');
 }
-
-boot();
 </script>
 </body>
 </html>
