@@ -763,7 +763,7 @@ async function boot() {
   if (channelId && !servers.length) {
     showLoading('Looking up channel…');
     try {
-      const res = await fetch('https://sportlink18.pages.dev/id.json');
+      const res = await fetch('https://sportlink-10.pages.dev/id.json');
       const data = await res.json();
       const ch = data[channelId];
 
