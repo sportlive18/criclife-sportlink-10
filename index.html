@@ -1,234 +1,233 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SportLink - Criclife</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-            min-height: 100vh;
-            color: #fff;
-        }
-        .header {
-            background: rgba(10,10,10,0.98);
-            padding: 0 40px;
-            display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 3px solid #e8000d;
-            box-shadow: 0 4px 30px rgba(232,0,13,0.3);
-            height: 70px;
-        }
-        .logo-container { display: flex; align-items: center; gap: 6px; }
-        .logo-sport { font-size: 30px; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
-        .logo-link  { font-size: 30px; font-weight: 900; color: #e8000d; text-transform: uppercase; letter-spacing: 1px; }
-        .header-right { display: flex; align-items: center; gap: 16px; }
-        .live-badge {
-            background: #e8000d; padding: 7px 18px; border-radius: 4px;
-            font-size: 13px; font-weight: 700; letter-spacing: 2px;
-            animation: glow 2s infinite;
-            display: flex; align-items: center; gap: 7px;
-        }
-        .live-dot-header { width: 8px; height: 8px; background: #fff; border-radius: 50%; animation: pulse 1.5s infinite; }
-
-        /* WhatsApp button in header */
-        .wa-btn {
-            display: flex; align-items: center; gap: 8px;
-            background: #25D366; color: #fff;
-            padding: 8px 18px; border-radius: 6px;
-            font-size: 13px; font-weight: 700; letter-spacing: 1px;
-            text-decoration: none; text-transform: uppercase;
-            transition: all 0.25s;
-            box-shadow: 0 4px 15px rgba(37,211,102,0.35);
-        }
-        .wa-btn:hover { background: #1ebe5d; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37,211,102,0.55); }
-        .wa-icon { font-size: 17px; }
-
-        @keyframes glow {
-            0%,100%{ box-shadow: 0 0 10px rgba(232,0,13,.5); }
-            50%    { box-shadow: 0 0 25px rgba(232,0,13,.9); }
-        }
-        @keyframes pulse {
-            0%,100%{ opacity:1; transform:scale(1); }
-            50%    { opacity:.4; transform:scale(1.4); }
-        }
-        .sub-header {
-            background: linear-gradient(90deg,#e8000d,#b30000);
-            padding: 10px 40px; display: flex; align-items: center; gap: 14px;
-        }
-        .cricket-icon { font-size: 20px; }
-        .sub-title { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; }
-        .sub-divider { width: 1px; height: 16px; background: rgba(255,255,255,.4); }
-        .sub-desc { font-size: 13px; color: rgba(255,255,255,.85); letter-spacing: 1px; }
-        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
-        .video-section {
-            background: rgba(255,255,255,.04); border-radius: 14px; overflow: hidden;
-            box-shadow: 0 30px 80px rgba(0,0,0,.8);
-            border: 1px solid rgba(232,0,13,.25);
-        }
-        .video-header {
-            background: rgba(0,0,0,.6); padding: 16px 28px;
-            display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid rgba(232,0,13,.2);
-        }
-        .video-title-group { display: flex; flex-direction: column; gap: 4px; }
-        .video-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .video-subtitle { font-size: 13px; color: rgba(255,255,255,.55); letter-spacing: 1px; }
-        .live-indicator {
-            display: flex; align-items: center; gap: 9px;
-            background: rgba(232,0,13,.15); padding: 8px 18px; border-radius: 6px;
-            border: 1px solid rgba(232,0,13,.5);
-        }
-        .live-dot { width: 10px; height: 10px; background: #e8000d; border-radius: 50%; animation: pulse 1.5s infinite; box-shadow: 0 0 8px #e8000d; }
-        .live-text { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #e8000d; }
-
-        .player-shell {
-            position: relative; width: 100%; padding-bottom: 56.25%; background: #000;
-        }
-        .player-shell iframe {
-            position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block;
-        }
-
-        .controls {
-            padding: 18px 28px; background: rgba(0,0,0,.5);
-            display: flex; gap: 12px; align-items: center;
-            border-top: 1px solid rgba(255,255,255,.06);
-        }
-        .btn { padding:10px 22px; border:none; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; transition:all .25s; color:#fff; text-transform:uppercase; letter-spacing:1px; }
-        .btn-primary  { background:#e8000d; box-shadow:0 4px 15px rgba(232,0,13,.35); }
-        .btn-primary:hover  { background:#ff1a24; box-shadow:0 6px 20px rgba(232,0,13,.55); transform:translateY(-2px); }
-        .btn-secondary{ background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); }
-        .btn-secondary:hover{ background:rgba(255,255,255,.18); transform:translateY(-2px); }
-        .spacer { flex:1; }
-        .stream-info { font-size:12px; color:rgba(255,255,255,.4); letter-spacing:1px; }
-
-        /* WhatsApp banner below player */
-        .wa-banner {
-            background: linear-gradient(90deg, #075e54, #128c7e);
-            padding: 14px 28px;
-            display: flex; align-items: center; justify-content: space-between;
-            border-top: 1px solid rgba(37,211,102,0.3);
-            gap: 16px;
-        }
-        .wa-banner-left { display: flex; align-items: center; gap: 12px; }
-        .wa-banner-icon { font-size: 28px; }
-        .wa-banner-text h4 { font-size: 14px; font-weight: 700; color: #fff; }
-        .wa-banner-text p { font-size: 12px; color: rgba(255,255,255,.75); margin-top: 2px; }
-        .wa-join-btn {
-            background: #25D366; color: #fff;
-            padding: 10px 24px; border-radius: 6px;
-            font-size: 13px; font-weight: 700;
-            text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
-            white-space: nowrap;
-            transition: all 0.25s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .wa-join-btn:hover { background: #1ebe5d; transform: translateY(-2px); }
-
-        .footer { text-align:center; padding:30px 20px; color:rgba(255,255,255,.25); font-size:12px; letter-spacing:1px; }
-        .footer span { color:#e8000d; }
-
-        @media(max-width:768px){
-            .header,.sub-header{ padding-left:16px; padding-right:16px; }
-            .logo-sport,.logo-link{ font-size:22px; }
-            .sub-desc,.sub-divider{ display:none; }
-            .wa-btn span { display:none; }
-            .wa-btn { padding: 8px 12px; }
-            .container{ margin:16px auto; padding:0 12px; }
-            .controls{ flex-wrap:wrap; padding:14px 16px; gap:10px; }
-            .btn{ padding:9px 16px; font-size:12px; }
-            .stream-info{ display:none; }
-            .wa-banner { padding: 12px 16px; }
-            .wa-banner-text p { display:none; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sportlink</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0f1115;--surface:#171a21;--surface2:#1f2430;--text:#eef2f7;--muted:#a5b0c2;--border:rgba(255,255,255,.1);--primary:#1db954;--primary2:#0f8fbe;--radius:18px;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:'Satoshi',sans-serif;background:linear-gradient(180deg,#0b0d12,#10141c 35%,#0e1117);color:var(--text)}
+    a{color:inherit;text-decoration:none} img{display:block;object-fit:cover;border-radius:14px;background:#0b0d12}
+    .wrap{max-width:1200px;margin:0 auto;padding:24px}
+    .hero{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:32px 0 24px;border-bottom:1px solid var(--border)}
+    .logo{display:flex;align-items:center;gap:14px} .logo-mark{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:grid;place-items:center;font-weight:700;color:#08110d}
+    h1{margin:0;font-size:clamp(2rem,4vw,4rem);line-height:1} p{margin:10px 0 0;color:var(--muted);max-width:60ch}
+    .count{padding:10px 14px;border:1px solid var(--border);border-radius:999px;color:var(--muted);white-space:nowrap}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;padding:28px 0 40px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));border:1px solid var(--border);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;justify-content:space-between;min-height:210px;box-shadow:0 10px 30px rgba(0,0,0,.22)}
+    .card-top{display:flex;gap:14px;align-items:flex-start} .card h2{font-size:1.1rem;line-height:1.25;margin:8px 0 0} .tag{display:inline-block;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:#7dd3fc}
+    .play-btn{margin-top:18px;display:inline-flex;justify-content:center;align-items:center;min-height:46px;padding:12px 14px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#31d46d);color:#041108;font-weight:700}
+    .note{color:var(--muted);font-size:.95rem;padding-bottom:24px}
+    @media (max-width:720px){.hero{flex-direction:column}.wrap{padding:18px}}
+  </style>
 </head>
 <body>
-
-<div class="header">
-    <div class="logo-container">
-        <span class="logo-sport">Sport</span><span class="logo-link">Link</span>
-    </div>
-    <div class="header-right">
-        <a class="wa-btn" href="https://whatsapp.com/channel/0029VbC2oQsC6ZvmwpR3v73v" target="_blank">
-            <span class="wa-icon">📢</span>
-            <span>Join Channel</span>
-        </a>
-        <div class="live-badge"><div class="live-dot-header"></div>LIVE</div>
-    </div>
-</div>
-
-<div class="sub-header">
-    <span class="cricket-icon">🏏</span>
-    <span class="sub-title">Criclife</span>
-    <div class="sub-divider"></div>
-    <span class="sub-desc">Live Cricket Streaming</span>
-</div>
-
-<div class="container">
-    <div class="video-section">
-
-        <div class="video-header">
-            <div class="video-title-group">
-                <div class="video-title">Cricllife</div>
-                <div class="video-subtitle">Live Cricket · HD Stream</div>
-            </div>
-            <div class="live-indicator">
-                <div class="live-dot"></div>
-                <span class="live-text">LIVE</span>
-            </div>
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="logo">
+          <div class="logo-mark">S</div>
+          <div>
+            <h1>Sportlink</h1>
+            <p>Live sports streams — cricket, football and more.</p>
+          </div>
         </div>
-
-        <div class="player-shell" id="playerShell">
-            <iframe
-                id="streamFrame"
-                src="https://sportlink-criclife.pages.dev/"
-                allowfullscreen
-                allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                scrolling="no"
-                frameborder="0">
-            </iframe>
-        </div>
-
-        <!-- WhatsApp Channel Banner -->
-        <div class="wa-banner">
-            <div class="wa-banner-left">
-                <span class="wa-banner-icon">💬</span>
-                <div class="wa-banner-text">
-                    <h4>Join Our WhatsApp Channel</h4>
-                    <p>Get live scores, updates & stream links instantly</p>
-                </div>
-            </div>
-            <a class="wa-join-btn" href="https://whatsapp.com/channel/0029VbC2oQsC6ZvmwpR3v73v" target="_blank">
-                ➜ &nbsp;Join Now
-            </a>
-        </div>
-
-        <div class="controls">
-            <button class="btn btn-primary"   onclick="enterFullscreen()">⛶ &nbsp;Fullscreen</button>
-            <button class="btn btn-secondary" onclick="reloadStream()">↺ &nbsp;Reload</button>
-            <div class="spacer"></div>
-            <div class="stream-info">sportlink.live · cricbuzz</div>
-        </div>
-
-    </div>
-</div>
-
-<div class="footer">&copy; 2025 <span>SportLink</span> &nbsp;·&nbsp; Cricbuzz &nbsp;·&nbsp; All rights reserved</div>
-
-<script>
-    function reloadStream(){
-        const f = document.getElementById('streamFrame');
-        f.src = f.src;
-    }
-    function enterFullscreen(){
-        const w = document.getElementById('playerShell');
-        const f = document.getElementById('streamFrame');
-        const go = el => (el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||el.msRequestFullscreen||function(){}).call(el);
-        go(w) || go(f);
-    }
-    document.getElementById('playerShell').addEventListener('click', ()=>{ setTimeout(enterFullscreen,300); }, {once:true});
-</script>
+      </div>
+      <div class="count">62 channels</div>
+    </section>
+    <section class="grid">
+      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SKY SPORTS CRICKET FHD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SKY SPORTS CRICKET FHD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=sky-sports-cricket-fhd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SKY SPORTS CRICKET FHD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SKY SPORTS CRICKET FHD</h2></div></div>
+      <a class="play-btn" href="player.html?id=sky-sports-cricket-fhd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SKY SPORTS CRICKET 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SKY SPORTS CRICKET 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=sky-sports-cricket-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/77658.png" alt="FOX SPORTS 501 logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>FOX SPORTS 501</h2></div></div>
+      <a class="play-btn" href="player.html?id=fox-sports-501">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 1 FHD ENGLISH 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 FHD ENGLISH 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-fhd-english-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1133.jpg" alt="STAR SPORTS 1 4K ENGLISH logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 4K ENGLISH</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-4k-english">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1134.jpg" alt="STAR SPORTS 1 4K HINDI logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 4K HINDI</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-4k-hindi">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 1 FHD HINDI logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 FHD HINDI</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-fhd-hindi">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 1 FHD HINDI 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 FHD HINDI 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-fhd-hindi-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1136.jpg" alt="STAR SPORTS 1 TAMIL HD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 TAMIL HD</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-tamil-hd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 1 TAMIL HD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 TAMIL HD</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-tamil-hd-2">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/73403.png" alt="STAR SPORTS TELUGU 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS TELUGU 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-telugu-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1135.jpg" alt="STAR SPORTS 1 KANNADA HD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 KANNADA HD</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-kannada-hd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="A SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>A SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=a-sports">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SUPER SPORTS CRICKET 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SUPER SPORTS CRICKET 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=super-sports-cricket-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="A SPORTS 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>A SPORTS 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=a-sports-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="A SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>A SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=a-sports-2">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1126.png" alt="PTV SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>PTV SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=ptv-sports">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="PTV SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>PTV SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=ptv-sports-2">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="PTV SPORTS 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>PTV SPORTS 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=ptv-sports-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68967.png" alt="WILLOW SPORTS FHD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW SPORTS FHD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-sports-fhd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="WILLOW SPORTS 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW SPORTS 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-sports-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="WILLOW CRICKET BK logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW CRICKET BK</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-cricket-bk">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68950.png" alt="WILLOW CRICKET logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW CRICKET</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-cricket">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68965.png" alt="WILLOW CRICKET 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW CRICKET 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-cricket-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1145.jpg" alt="WILLOW EXTRA 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW EXTRA 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-extra-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1146.jpg" alt="WILLOW EXTRA BK logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW EXTRA BK</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-extra-bk">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68966.png" alt="WILLOW EXTRA FHD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>WILLOW EXTRA FHD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=willow-extra-fhd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SUPER SPORTS CRICKET logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SUPER SPORTS CRICKET</h2></div></div>
+      <a class="play-btn" href="player.html?id=super-sports-cricket">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SUPER SPORTS CRICKET logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SUPER SPORTS CRICKET</h2></div></div>
+      <a class="play-btn" href="player.html?id=super-sports-cricket-2">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68935.png" alt="ASTRO CRICKET FHD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>ASTRO CRICKET FHD</h2></div></div>
+      <a class="play-btn" href="player.html?id=astro-cricket-fhd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68952.png" alt="ASTRO CRICKET FHD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>ASTRO CRICKET FHD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=astro-cricket-fhd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1122.png" alt="ASTRO CRICKET 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>ASTRO CRICKET 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=astro-cricket-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 2 FHD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 2 FHD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-2-fhd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 2 FHD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 2 FHD</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-2-fhd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 2 HINDI FHD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 2 HINDI FHD</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-2-hindi-fhd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1137.jpg" alt="STAR SPORTS 2 HINDI 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 2 HINDI 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-2-hindi-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1138.jpg" alt="STAR SPORTS 3 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 3 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-3-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS 1 TAMIL HD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS 1 TAMIL HD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-1-tamil-hd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS SELECT 1 FHD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS SELECT 1 FHD</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-select-1-fhd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1139.jpg" alt="STAR SPORTS SELECT 1 4K ENGLISH logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS SELECT 1 4K ENGLISH</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-select-1-4k-english">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS SELECT 1 FHD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS SELECT 1 FHD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-select-1-fhd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/78032.jpg" alt="STAR SPORTS SELECT 1 4K MALAYALAM logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS SELECT 1 4K MALAYALAM</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-select-1-4k-malayalam">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS SELECT 2 FHD 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS SELECT 2 FHD 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-select-2-fhd-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1140.jpg" alt="STAR SPORTS SELECT 2 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS SELECT 2 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-select-2-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="STAR SPORTS SELECT 2 FHD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS SELECT 2 FHD</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-select-2-fhd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1123.png" alt="DD SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>DD SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=dd-sports">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68953.png" alt="DD SPORTS 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>DD SPORTS 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=dd-sports-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68936.png" alt="DD SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>DD SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=dd-sports-2">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1132.jpg" alt="SONY SPORTS 5 HD logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SONY SPORTS 5 HD</h2></div></div>
+      <a class="play-btn" href="player.html?id=sony-sports-5-hd">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1142.jpg" alt="T SPORTS BANGLA logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>T SPORTS BANGLA</h2></div></div>
+      <a class="play-btn" href="player.html?id=t-sports-bangla">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/1143.png" alt="TEN SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>TEN SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=ten-sports">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/68949.png" alt="TEN SPORTS logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>TEN SPORTS</h2></div></div>
+      <a class="play-btn" href="player.html?id=ten-sports-2">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="GEO SUPER logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>GEO SUPER</h2></div></div>
+      <a class="play-btn" href="player.html?id=geo-super">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="GEO SUPER 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>GEO SUPER 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=geo-super-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SONY TEN 1 logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SONY TEN 1</h2></div></div>
+      <a class="play-btn" href="player.html?id=sony-ten-1">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SONY TEN 2 logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SONY TEN 2</h2></div></div>
+      <a class="play-btn" href="player.html?id=sony-ten-2">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SONY TEN 3 logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SONY TEN 3</h2></div></div>
+      <a class="play-btn" href="player.html?id=sony-ten-3">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="https://i.ibb.co/VWVcf4t5/RKDYIPTV.jpg" alt="SONY TEN 4 logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>SONY TEN 4</h2></div></div>
+      <a class="play-btn" href="player.html?id=sony-ten-4">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/73402.png" alt="STAR SPORTS TAMIL 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>STAR SPORTS TAMIL 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=star-sports-tamil-4k">Watch Live</a>
+    </article>      <article class="card">
+      <div class="card-top"><img src="http://tv.max4k.us/stalker_portal/misc/logos/320/73404.png" alt="FOX CRICKET 4K logo" width="56" height="56" loading="lazy"><div><span class="tag">SPORTS | CRICKET</span><h2>FOX CRICKET 4K</h2></div></div>
+      <a class="play-btn" href="player.html?id=fox-cricket-4k">Watch Live</a>
+    </article>
+    </section>
+    <div class="note">Each button opens the stream in the built-in player.</div>
+  </main>
 </body>
 </html>
